@@ -130,7 +130,7 @@ if __name__ == '__main__':
     parser.add_argument('-fd', '--dirsearch_file', help="dirsearch结果的URL文件,自动解析", required=False)
     parser.add_argument('-u', '--url', help="请求的主域名", required=False)
     parser.add_argument('-d', '--dic', help="目录字典和-u参数一起使用，如果不加则默认为当前目录下dicc.txt", required=False)
-    parser.add_argument('-s', '--sem', help="并发的数量，默认100", required=False)
+    parser.add_argument('-s', '--sem', help="并发的数量，默认200", required=False)
     parser.add_argument('-ua', '--user-agent', help="请求的User-Agent,有默认UA", required=False)
     parser.add_argument('-o', '--output', help="保存的文件名称,默认为result.csv", required=False)
     
