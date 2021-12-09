@@ -124,7 +124,7 @@ def begin(url_file,save_file,file_type='default',req_type='file',req_domain=''):
 
 if __name__ == '__main__':
     file_name = sys.argv[0]
-    parser = parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,epilog = 'Example: \n\tpython '+file_name+' -f url_file.txt \n\tpython '+file_name+' -fd dirsearch.txt \n\tpython '+file_name+' -u https://www.baidu.com\n\n\t\t\t\t\t\tBy shuaninfo\n\n',description='该程序主要用来探测URL信息,默认仅显示状态码为200、301、302、401的资源。')
+    parser = parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,epilog = 'Example: \n\tpython '+file_name+' -f url_file.txt \n\tpython '+file_name+' -fd dirsearch.txt \n\tpython '+file_name+' -u https://www.baidu.com\n\n\t\t\t\t\t\t\n',description='该程序主要用来探测URL信息,默认仅显示状态码为200、301、302、401的资源。')
     parser.error = usage
     parser.add_argument('-f', '--file', help="需要请求的URL文件，为完整URL地址", required=False)
     parser.add_argument('-fd', '--dirsearch_file', help="dirsearch结果的URL文件,自动解析", required=False)
