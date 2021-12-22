@@ -76,7 +76,7 @@ async def get_url_info(sem,url):
                 status_code = response.status_code
                 if status_code == 200 or status_code == 401:
                     res_length = response.headers.get('content-length') if response.headers.get('content-length') else len(response.content)
-                    if res_length > 1:
+                    if float(res_length) > 1:
                         req_url = url
                         res_url = response.url
                         content = response.text

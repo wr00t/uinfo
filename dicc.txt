@@ -32,7 +32,6 @@
 .CSV
 .CVS
 .DS_Store
-.DS_store
 .FBCIndex
 .HTF/
 .ICEauthority
