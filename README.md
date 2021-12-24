@@ -14,8 +14,8 @@ python uinfo.py -h
         -t {file,domain,dir}, --type {file,domain,dir}
                               请求的文件类型:
                               file 为内容全是完整url的文件
-                              domain 为多个域名文件
-                              dir 为dirsearch的url文件
+                              domain 为内容是多个域名的文件
+                              dir 为dirsearch扫描之后的url文件
                               默认为 file
         -p PATH, --path PATH  待请求的文件路径
         -d DOMAIN, --domain DOMAIN
@@ -26,6 +26,12 @@ python uinfo.py -h
                               请求的User-Agent,有默认UA
         -o OUTPUT, --output OUTPUT
                               保存的文件名称,默认为result.csv
+
+      Example:
+              python .\uinfo.py -t file -p url_file.txt #加载URL文件
+              python .\uinfo.py -t domain -p domains.txt #加载域名文件
+              python .\uinfo.py -t dir -p dirsearch.txt #加载dirsearch结果的URL文件
+              python .\uinfo.py -d https://www.baidu.com #扫描单个域名
 
         
 ## Example:
