@@ -6,6 +6,7 @@ import time
 import httpx
 import random
 import string
+import difflib
 import hashlib
 import asyncio
 import argparse
@@ -20,23 +21,64 @@ def genearate_md5_sign(data):
     if data:
         return hashlib.md5(data.encode(encoding='utf-8')).hexdigest()
     
+def get_res_text_sign(text_list):
+    sign_list = []
+    if text_list:
+        for text in text_list:
+            sign_list.append(genearate_md5_sign(text))
+    sign_list = list(set(sign_list))
+    return sign_list
+
+'''
+    获取最大的文本相似度
+'''
+def get_res_text_ratio(content,text_list):
+    ratio_list = []
+    if text_list:
+        for text in text_list:
+            ratio = difflib.SequenceMatcher(None, content, text).quick_ratio()
+            ratio_list.append(ratio)
+    return max(ratio_list)
+
 '''
     随机生成url，请求获取结果生成md5签名
 '''
-def probe_sign(domain):
+def probe_res_text(domain):
     random_strs = ''.join(random.choice(string.ascii_letters+string.digits) for i in range(10))
-    url = domain+random_strs+'.'+random_strs
-    print('[*] 生成随机URL {}\n'.format(url))
-    sign = None
+    sign_list = []
     try:
-        headers.update({'Referer':url})
-        res = httpx.get(url,headers=headers,verify = False,follow_redirects = True)
-        sign = genearate_md5_sign(res.text)
-        print('[*] 响应签名为： {}\n'.format(sign))
-        return sign
+        com_url = domain+random_strs+'.'+random_strs
+        headers.update({'Referer':com_url})
+        print('[*] 生成随机URL1 {}\n'.format(com_url))
+        with httpx.Client(headers=headers,verify = False,follow_redirects = True) as client:
+            res = client.get(com_url)
+            content = res.text
+            res_length = res.headers.get('content-length') if res.headers.get('content-length') else len(content)
+            res_content_type = res.headers.get('content-type') if res.headers.get('content-type') else 'None'
+            res_server = res.headers.get('server') if res.headers.get('server') else 'None'
+            select_obj = Selector(text=content).xpath('//title/text()').get()
+            title = select_obj if select_obj else 'None'
+            print('[*] 状态码： {},响应长度：{:.2f}KB,title：{},内容类型：{},Server：{}\n'.format(res.status_code,(float(res_length)/1024),title,res_content_type,res_server))
+            sign_list.append(content)
+        
+        pd_url = domain+'.'+random_strs
+        headers.update({'Referer':pd_url})
+        print('[*] 生成随机URL2 {}\n'.format(pd_url))
+        with httpx.Client(headers=headers,verify = False,follow_redirects = True) as client:
+            res = client.get(pd_url)
+            content = res.text
+            res_length = res.headers.get('content-length') if res.headers.get('content-length') else len(content)
+            res_content_type = res.headers.get('content-type') if res.headers.get('content-type') else 'None'
+            res_server = res.headers.get('server') if res.headers.get('server') else 'None'
+            select_obj = Selector(text=content).xpath('//title/text()').get()
+            title = select_obj if select_obj else 'None'
+            print('[*] 状态码： {},响应长度：{:.2f}KB,title：{},内容类型：{},Server：{}\n'.format(res.status_code,(float(res_length)/1024),title,res_content_type,res_server))
+            sign_list.append(content)
+        return sign_list
     except:
         pass
-    return sign
+    sign_list = list(set(sign_list))
+    return sign_list
 
 def read_url_file(path):
     ds = []
@@ -100,15 +142,17 @@ async def get_url_info(sem,url,ex_content_sign=None):
             async with httpx.AsyncClient(headers=headers,verify = False,follow_redirects = True) as client:
                 response = await client.get(url)
                 status_code = response.status_code
+                content = response.text
                 if status_code == 200:
-                    res_length = response.headers.get('content-length') if response.headers.get('content-length') else len(response.content)
+                    res_length = response.headers.get('content-length') if response.headers.get('content-length') else len(content)
                     if float(res_length) > 1:
                         req_url = url
                         res_url = response.url
-                        content = response.text
                         if ex_content_sign:
                             content_sign = genearate_md5_sign(content)
-                            if content_sign != ex_content_sign:
+                            sing_list = get_res_text_sign(ex_content_sign)
+                            max_ratio = get_res_text_ratio(content,ex_content_sign)
+                            if content_sign not in sing_list and max_ratio < 0.92: # 响应文本签名和相似度比较
                                 req_suffix = Path(urlparse(url).path).suffix[1:]
                                 req_suffix = req_suffix if req_suffix else 'None'
                                 select_obj = Selector(text=content).xpath('//title/text()').get()
@@ -184,7 +228,7 @@ if __name__ == '__main__':
         new_domain = domain if domain.endswith('/') else domain+'/'
         print('[*] 开始扫描域名 {} ...\n'.format(new_domain))
         urls = list(map(lambda o:new_domain+o,dicc_list))
-        sign = probe_sign(new_domain)
+        sign = probe_res_text(new_domain)
         result = begin_scan(urls,sem,sign)
         end_time = time.time()
         print("\n[*] 扫描域名 {} 结束,用时: {:.2f} 秒 \n".format(new_domain,end_time-start_time))
@@ -208,7 +252,7 @@ if __name__ == '__main__':
                 print('[*] 探测第 {} 个域名 {} \n'.format(i,new_domain))
                 urls = list(map(lambda o:new_domain+o,dicc_list))
                 domain_start_time = time.time()
-                sign = probe_sign(new_domain)
+                sign = probe_res_text(new_domain)
                 result = begin_scan(urls,sem,sign)
                 domain_end_time = time.time()
                 print("\n\n[*] 探测 {} 结束,用时: {:.2f} 秒 \n".format(new_domain,domain_end_time-domain_start_time))
