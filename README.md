@@ -35,7 +35,7 @@ python uinfo.py -h
 
         
 ## Example:
-        python uinfo.py -t file -p url_file.txt #加载URL文件
-        python uinfo.py -t domain -p domains.txt #加载域名文件
-        python uinfo.py -t dir -p dirsearch.txt #加载dirsearch结果的URL文件
-        python uinfo.py -d https://www.baidu.com #扫描单个域名
+        python .\uinfo.py -t file -p url_file.txt #加载内容为URL的文件
+        python .\uinfo.py -t domain -p domains.txt #加载内容为域名的文件
+        python .\uinfo.py -t dir -p dirsearch.txt #加载dirsearch扫描结果的URL文件
+        python .\uinfo.py -d https://www.baidu.com #扫描单个域名
