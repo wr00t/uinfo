@@ -29,6 +29,7 @@ def probe_sign(domain):
     print('[*] 生成随机URL {}\n'.format(url))
     sign = None
     try:
+        headers.update({'Referer':url})
         res = httpx.get(url,headers=headers,verify = False,follow_redirects = True)
         sign = genearate_md5_sign(res.text)
         print('[*] 响应签名为： {}\n'.format(sign))
@@ -95,6 +96,7 @@ def write_to_csv(path,res_list,mode='w',title=True):
 async def get_url_info(sem,url,ex_content_sign=None):
     try:
         async with sem:
+            headers.update({'Referer':url})
             async with httpx.AsyncClient(headers=headers,verify = False,follow_redirects = True) as client:
                 response = await client.get(url)
                 status_code = response.status_code
