@@ -7,7 +7,7 @@ python uinfo.py -h
 ## Usage ##
       usage: uinfo.py [-h] [-t {file,domain,dir}] [-p PATH] [-d DOMAIN] [-w WORD] [-s SEM] [-ua USER_AGENT] [-o OUTPUT]
 
-      该程序主要用来探测URL信息,返回对应的响应长度、title、server等字段，默认仅显示状态码为200、401的资源。
+      该程序主要用来探测URL信息,返回对应的响应长度、title、server等字段，默认仅显示状态码为200的资源。
 
       optional arguments:
         -h, --help            show this help message and exit
