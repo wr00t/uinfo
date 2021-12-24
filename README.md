@@ -1,7 +1,9 @@
 # uinfo
 该程序主要用来探测URL信息,包含状态码、响应长度、Title、Server等，自带扩展dirsearch字典，默认保存成csv文件,
 
-自动解析dirsearch格式URL扫描结果文件,响应长度小于1的资源不进行展示。(Alpha版本)
+自动解析dirsearch格式URL扫描结果文件,响应长度小于1的资源不进行展示。
+
+自动过滤通用404页面和文本相似度不计较。(Alpha版本)
 ## 使用帮助 ##
 python uinfo.py -h
 ## Usage ##
