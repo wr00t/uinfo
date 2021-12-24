@@ -151,7 +151,7 @@ def begin_scan(urls,sem,ex_content_sign=None):
 
 if __name__ == '__main__':
     file_name = sys.argv[0]
-    parser = parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,epilog = 'Example: \n\tpython '+file_name+' -t file url_file.txt #加载URL文件\n\tpython '+file_name+' -t domain domains.txt #加载域名文件\n\tpython '+file_name+' -t dir dirsearch.txt #加载dirsearch结果的URL文件\n\tpython '+file_name+' -d https://www.baidu.com #扫描单个域名\n\n\t\t\t\t\t\t\n',description='该程序主要用来探测URL信息,返回对应的响应长度、title、server等字段，默认仅显示状态码为200的资源。')
+    parser = parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,epilog = 'Example: \n\tpython '+file_name+' -t file -p url_file.txt #加载URL文件\n\tpython '+file_name+' -t domain -p domains.txt #加载域名文件\n\tpython '+file_name+' -t dir -p dirsearch.txt #加载dirsearch结果的URL文件\n\tpython '+file_name+' -d https://www.baidu.com #扫描单个域名\n\n\t\t\t\t\t\t\n',description='该程序主要用来探测URL信息,返回对应的响应长度、title、server等字段，默认仅显示状态码为200的资源。')
     parser.error = usage
     parser.add_argument('-t', '--type',help="请求的文件类型:\nfile 为内容全是完整url的文件\ndomain 为多个域名文件\ndir 为dirsearch的url文件\n默认为 file", default='file',choices=['file','domain','dir'],required=False)
     parser.add_argument('-p', '--path', help="待请求的文件路径", required=False)
