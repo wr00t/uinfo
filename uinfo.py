@@ -97,7 +97,7 @@ def read_dicc_file(path):
     with open(path) as f:
         for x in f:
             x = x.strip()
-            if x in ['.ico','.png','.gif','.jpg','favicon.ico']:
+            if x in ['.ico','.png','.gif','.jpg','favicon.ico','.css']:
                 continue
             if '%EXT%' in x:
                 for e in ext_list:
