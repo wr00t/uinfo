@@ -153,7 +153,7 @@ if __name__ == '__main__':
     file_name = sys.argv[0]
     parser = parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,epilog = 'Example: \n\tpython '+file_name+' -t file -p url_file.txt #加载URL文件\n\tpython '+file_name+' -t domain -p domains.txt #加载域名文件\n\tpython '+file_name+' -t dir -p dirsearch.txt #加载dirsearch结果的URL文件\n\tpython '+file_name+' -d https://www.baidu.com #扫描单个域名\n\n\t\t\t\t\t\t\n',description='该程序主要用来探测URL信息,返回对应的响应长度、title、server等字段，默认仅显示状态码为200的资源。')
     parser.error = usage
-    parser.add_argument('-t', '--type',help="请求的文件类型:\nfile 为内容全是完整url的文件\ndomain 为多个域名文件\ndir 为dirsearch的url文件\n默认为 file", default='file',choices=['file','domain','dir'],required=False)
+    parser.add_argument('-t', '--type',help="请求的文件类型:\nfile 为内容全是完整url的文件\ndomain 为内容是多个域名的文件\ndir 为dirsearch扫描之后的url文件\n默认为 file", default='file',choices=['file','domain','dir'],required=False)
     parser.add_argument('-p', '--path', help="待请求的文件路径", required=False)
     parser.add_argument('-d', '--domain', help="请求的单个主域名", required=False)
     parser.add_argument('-w', '--word', help="目录字典和-d参数一起使用，如果不加则默认为当前目录下的dicc.txt", default='dicc.txt',required=False)
