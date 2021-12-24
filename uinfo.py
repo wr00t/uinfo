@@ -152,7 +152,7 @@ async def get_url_info(sem,url,ex_content_sign=None):
                             content_sign = genearate_md5_sign(content)
                             sing_list = get_res_text_sign(ex_content_sign)
                             max_ratio = get_res_text_ratio(content,ex_content_sign)
-                            if content_sign not in sing_list and max_ratio < 0.92: # 响应文本签名和相似度比较
+                            if content_sign not in sing_list and max_ratio < 0.84: # 响应文本签名和相似度比较
                                 req_suffix = Path(urlparse(url).path).suffix[1:]
                                 req_suffix = req_suffix if req_suffix else 'None'
                                 select_obj = Selector(text=content).xpath('//title/text()').get()
